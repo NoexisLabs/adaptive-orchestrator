@@ -1,0 +1,17 @@
+{
+  "name": "adaptive-orchestrator",
+  "version": "0.1.0",
+  "description": "Risk-aware multi-agent orchestration for Claude Code with model-class routing, independent review, evidence gates, and specialist audits.",
+  "author": {
+    "name": "NoexisLabs"
+  },
+  "license": "MIT",
+  "keywords": [
+    "orchestration",
+    "multi-agent",
+    "code-review",
+    "security",
+    "verification",
+    "claude-code"
+  ]
+}
