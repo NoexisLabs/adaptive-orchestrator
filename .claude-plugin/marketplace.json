@@ -1,0 +1,16 @@
+{
+  "name": "adaptive-orchestrator-marketplace",
+  "owner": {
+    "name": "NoexisLabs"
+  },
+  "plugins": [
+    {
+      "name": "adaptive-orchestrator",
+      "source": "./",
+      "description": "Risk-aware multi-agent orchestration for Claude Code with model-class routing, independent review, evidence gates, and specialist audits.",
+      "version": "0.1.0",
+      "category": "development",
+      "tags": ["orchestration", "agents", "review", "security", "verification"]
+    }
+  ]
+}
