@@ -1,0 +1,76 @@
+name: Bug report
+description: Report incorrect plugin, skill, agent, routing, or validation behavior
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Do not include secrets or sensitive repository content.
+  - type: input
+    id: claude-version
+    attributes:
+      label: Claude Code version
+      description: Version/build if known.
+      placeholder: e.g. current stable
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Installation / marketplace
+        - Orchestrate skill
+        - Review skill
+        - Audit skill
+        - Model routing / fallback
+        - Agent permissions
+        - Worktree isolation
+        - Validation / CI
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal steps or command sequence. Redact sensitive project data.
+      placeholder: |
+        1. Add marketplace...
+        2. Install plugin...
+        3. Run skill...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and model availability
+      description: OS/provider/account restrictions/available model families if relevant.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or evidence
+      description: Paste only non-sensitive output needed to diagnose the issue.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I removed secrets, credentials, and sensitive repository content.
+          required: true
+        - label: This is not a security vulnerability requiring private disclosure.
+          required: true
