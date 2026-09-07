@@ -1,0 +1,55 @@
+name: Feature request
+description: Propose a general-purpose improvement to Adaptive Orchestrator
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What limitation or recurring workflow problem does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the smallest useful general-purpose solution.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Primary area
+      options:
+        - Orchestration policy
+        - Model routing / fallback
+        - Agent permissions
+        - Verification / evidence gates
+        - FAST / AUTO / STRICT modes
+        - Worktree / parallelism
+        - Review / audit workflows
+        - Validation / CI
+        - Documentation / examples
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Trade-offs
+      description: Cost, complexity, compatibility, safety, or token/turn implications.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What simpler approaches did you consider?
+  - type: checkboxes
+    id: fit
+    attributes:
+      label: Project fit
+      options:
+        - label: This is general-purpose and not specific to one repository or company.
+          required: true
+        - label: This does not depend on a dated model ID.
+          required: true
