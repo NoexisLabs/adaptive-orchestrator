@@ -1,8 +1,24 @@
 # Adaptive Orchestrator for Claude Code
 
+[![Validate plugin](https://github.com/NoexisLabs/adaptive-orchestrator/actions/workflows/validate.yml/badge.svg)](https://github.com/NoexisLabs/adaptive-orchestrator/actions/workflows/validate.yml)
+
+**Public beta · v0.2.0**
+
 A reusable Claude Code plugin for **risk-aware multi-agent engineering**.
 
 Adaptive Orchestrator scales from direct execution to independent multi-agent review depending on task complexity and risk. It combines model-family routing, bounded agent budgets, read-only reviewers, evidence gates, retry limits, specialist audits, and worktree isolation.
+
+> The objective is not more agents. The objective is **correctness per unit of compute**.
+
+## Quick links
+
+- [Quickstart](docs/QUICKSTART.md)
+- [Examples](docs/EXAMPLES.md)
+- [Design](docs/DESIGN.md)
+- [Coordination protocol](docs/PROTOCOL.md)
+- [Roadmap](ROADMAP.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security](SECURITY.md)
 
 ## What it adds
 
@@ -24,7 +40,7 @@ Adaptive Orchestrator scales from direct execution to independent multi-agent re
 
 ## Why
 
-The objective is not "more agents." The objective is **better engineering control**:
+The optimization target is **correctness per unit of compute**, not maximum agent activity:
 
 - cheaper models for mechanical discovery
 - coding-focused models for implementation
@@ -32,8 +48,6 @@ The objective is not "more agents." The objective is **better engineering contro
 - explicit evidence before completion
 - bounded retries and agent count
 - escalation only when uncertainty or consequence warrants it
-
-The optimization target is **correctness per unit of compute**, not maximum agent activity.
 
 ## Installation from GitHub
 
@@ -43,6 +57,8 @@ The optimization target is **correctness per unit of compute**, not maximum agen
 ```
 
 Plugins installed at user scope are available across projects. Project-specific architecture, commands, domain rules, and coding conventions should remain in each project's own configuration.
+
+See the [Quickstart](docs/QUICKSTART.md) for first-run guidance.
 
 ## User-facing skills
 
@@ -113,7 +129,7 @@ The plugin uses Claude Code's model-family aliases rather than dated model IDs:
 | Repository Explorer | `haiku` | low | 10 |
 | Isolated Implementer | `sonnet` | medium | 30 |
 
-These are **preferences, not hard dependencies**. Claude Code checks requested aliases against the user's `availableModels` allowlist. When an alias is not permitted, Claude Code can substitute an allowed model from that family or fall back to the inherited session model. The plugin therefore retains useful routing without requiring every user to have Fable, Opus, Sonnet, and Haiku access.
+These are **preferences, not hard dependencies**. Claude Code checks requested aliases against the user's available models. If a preferred family is unavailable, Claude Code can use an allowed model or fall back to the inherited session model. The plugin therefore retains useful routing without requiring every user to have access to every model family.
 
 ## Reviewer independence
 
@@ -266,10 +282,15 @@ When the Claude CLI is available, you can also run:
 claude plugin validate .
 ```
 
-## Design notes
+## Public beta
 
-- [`docs/DESIGN.md`](docs/DESIGN.md)
-- [`docs/PROTOCOL.md`](docs/PROTOCOL.md)
+The current release is intended for real use, but the project is still collecting compatibility and behavior feedback across Claude Code environments. See the [roadmap](ROADMAP.md) and use the structured GitHub issue templates for bugs and feature requests.
+
+## Contributing and security
+
+Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+For vulnerabilities or issues involving unsafe tool permissions, reviewer write access, secret exposure, or other security-sensitive behavior, follow [SECURITY.md](SECURITY.md) rather than publishing exploit details in a public issue.
 
 ## License
 
