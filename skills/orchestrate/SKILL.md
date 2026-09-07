@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-description: Coordinate software-engineering tasks using risk-aware multi-agent orchestration, model-class routing, independent review, evidence gates, and specialist audits. Use automatically for complex, cross-cutting, security-sensitive, domain-critical, or high-risk engineering work; keep trivial work lightweight.
+description: Coordinate software-engineering tasks using risk-aware multi-agent orchestration, capability-based model routing, independent review, evidence gates, and specialist audits. Use automatically for complex, cross-cutting, security-sensitive, domain-critical, or high-risk engineering work; keep trivial work lightweight.
 ---
 
 # Adaptive Orchestrator
@@ -11,16 +11,21 @@ Operate like a senior engineering organization, not a single undifferentiated co
 
 For every engineering request, first classify complexity and risk. Apply only as much orchestration as the task justifies. Preserve evidence, isolate independent reviews, and do not declare completion until verification supports it.
 
-## Model-class policy
+## Capability-based model policy
 
-Choose the best currently available model in each class. Do not pin dated model versions unless Claude Code technically requires a concrete identifier.
+Treat model assignments as preferences, never hard dependencies. Before delegation, determine what models or model classes are actually available in the current Claude Code environment. Route by role and capability, not by a mandatory named model.
 
-- **Fable class:** long-horizon orchestration, exceptionally difficult cross-system reasoning, difficult domain logic, unresolved multi-agent disagreements.
-- **Opus class:** independent architecture/advisor review, security review, adversarial final review, difficult judgment.
-- **Sonnet class:** normal implementation, debugging, backend/frontend/database work, tests and verification.
-- **Haiku class:** mechanical repository discovery, symbol/reference search, inventory, low-risk summaries.
+Preferred hierarchy:
 
-If the installed Claude Code version does not expose a requested class or class alias to subagents, choose the strongest currently supported equivalent that preserves the intended hierarchy, and report the substitution rather than failing silently.
+- **Orchestration / difficult domain reasoning:** strongest available long-horizon reasoning model. Prefer Fable when available; otherwise strongest Opus-class model; otherwise strongest Sonnet-class model; otherwise inherit the current model.
+- **Independent advisor / architecture / final challenge:** strongest available independent reasoning model. Prefer Opus; otherwise Fable; otherwise strongest Sonnet-class model; otherwise inherit.
+- **Security review:** strongest available review/reasoning model. Prefer Opus; otherwise Fable; otherwise strongest Sonnet-class model; otherwise inherit.
+- **Implementation / debugging / backend / frontend / database / tests:** strongest available coding-capable model. Prefer Sonnet; otherwise use the strongest suitable available model or inherit.
+- **Repository exploration / mechanical discovery:** fastest or cheapest suitable available model. Prefer Haiku; otherwise use the cheapest competent available model or inherit.
+
+Do not pin dated model versions unless Claude Code technically requires a concrete identifier.
+
+If runtime model availability cannot be inspected directly, infer availability from supported configuration and successful delegation attempts. Do not fail the task merely because a preferred class is unavailable. Record any meaningful substitution when it affects review strength or risk.
 
 ## Complexity classifier
 
@@ -38,7 +43,7 @@ Do not invoke the full agent hierarchy.
 Examples: well-defined feature or bug within a narrow component.
 
 Flow:
-`orchestrator/direct coordination -> Sonnet-class implementer -> verification`
+`orchestrator/direct coordination -> implementation agent -> verification`
 
 Add independent review only if risk warrants it.
 
@@ -46,13 +51,13 @@ Add independent review only if risk warrants it.
 Examples: cross-module changes, architecture work, unclear root cause, migrations, meaningful performance changes, concurrency, broad refactors.
 
 Flow:
-`Fable-class orchestrator -> Opus-class advisor -> revised plan -> Sonnet-class workers -> verification -> Opus-class final review`
+`strongest available orchestration model -> strongest available independent advisor -> revised plan -> implementation agents -> verification -> independent final review`
 
 ### T3 — Critical / specialist
 Examples: authentication, authorization, payments, sensitive data, destructive migrations, critical domain calculations, compliance-sensitive logic, highly consequential production changes.
 
 Flow:
-`Fable-class orchestrator -> specialist pre-review -> Opus advisor -> workers -> verification -> specialist post-review -> Opus final review -> orchestrator completion gate`
+`strongest available orchestration model -> specialist pre-review -> independent advisor -> workers -> verification -> specialist post-review -> independent final review -> orchestrator completion gate`
 
 ## Orchestrator contract
 
@@ -77,7 +82,7 @@ Protect the orchestrator context: delegate large mechanical searches, request co
 
 ## Advisor gate
 
-For T2/T3 work, invoke the independent advisor before implementation. Give it the original objective, discovered architecture, evidence, constraints, and proposed plan.
+For T2/T3 work, invoke the strongest suitable independent advisor available before implementation. Give it the original objective, discovered architecture, evidence, constraints, and proposed plan.
 
 Ask it to challenge:
 
@@ -102,7 +107,9 @@ Do not treat "approved" as useful review unless the advisor explains why the pla
 
 Use the domain-logic auditor for T3 domain-critical changes, or whenever correctness depends on specialized business, scientific, financial, operational, legal-rule, analytics, optimization, or other nontrivial domain logic.
 
-The auditor must independently reconstruct the intended logic from evidence and compare it with implementation. It must check units, directionality, transformations, missing values, edge conditions, time semantics, invariants, and displayed/returned outputs where applicable.
+The auditor must independently reconstruct the intended logic from evidence and compare it with implementation. Use the strongest suitable reasoning model available; prefer Fable when available, then Opus, then Sonnet, then inherit.
+
+It must check units, directionality, transformations, missing values, edge conditions, time semantics, invariants, and displayed/returned outputs where applicable.
 
 The domain auditor does not replace a qualified human professional where one is legally or operationally required.
 
@@ -110,7 +117,7 @@ The domain auditor does not replace a qualified human professional where one is 
 
 Use the security auditor for material changes involving authentication, authorization, permissions, sessions, secrets, payments, tenant isolation, user data, file uploads, external APIs, administrative functionality, or privileged operations.
 
-Security review must inspect both intended design and the resulting diff.
+Security review must inspect both intended design and the resulting diff. Use the strongest suitable independent review model available.
 
 ## Evidence-first rule
 
@@ -131,7 +138,7 @@ Documentation is not authoritative when implementation contradicts it.
 For bugs:
 `trace/reproduce -> root cause -> blast radius -> smallest robust fix -> tests -> regression check`
 
-Do not repeatedly apply random patches. After repeated failed attempts, re-investigate assumptions and escalate reasoning class.
+Do not repeatedly apply random patches. After repeated failed attempts, re-investigate assumptions and escalate reasoning capability if a stronger available model exists.
 
 ## Work isolation and parallelism
 
@@ -155,7 +162,7 @@ Avoid infinite agent loops.
 Default guidance per work unit:
 - one normal implementation attempt
 - one evidence-driven correction attempt if verification fails
-- after a second meaningful failure, return to the orchestrator for root-cause re-planning or model escalation
+- after a second meaningful failure, return to the orchestrator for root-cause re-planning or capability escalation
 
 Do not keep retrying the same hypothesis.
 
@@ -179,11 +186,7 @@ The orchestrator must inspect the final diff for substantial changes.
 Whenever practical:
 `AUTHOR != PRIMARY REVIEWER`
 
-Examples:
-- Sonnet implementation -> Opus review
-- security implementation -> Opus security auditor
-- domain-critical implementation -> Fable domain auditor
-- Fable orchestrator plan -> Opus advisor challenge
+Use the strongest independent reviewer available. Prefer separation of both role and model when the environment allows it.
 
 ## Finding gate
 
