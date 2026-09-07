@@ -1,7 +1,7 @@
 {
   "name": "adaptive-orchestrator",
-  "version": "0.1.0",
-  "description": "Risk-aware multi-agent orchestration for Claude Code with model-class routing, independent review, evidence gates, and specialist audits.",
+  "version": "0.2.0",
+  "description": "Risk-aware multi-agent orchestration for Claude Code with adaptive model routing, bounded agents, independent review, evidence gates, and specialist audits.",
   "author": {
     "name": "NoexisLabs"
   },
