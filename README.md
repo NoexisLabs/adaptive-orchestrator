@@ -7,7 +7,7 @@ It adds a lightweight-to-rigorous orchestration system that scales with task com
 ## What it adds
 
 - Complexity tiers: T0 trivial, T1 standard, T2 complex, T3 critical/specialist
-- Model-class routing: Fable / Opus / Sonnet / Haiku by role
+- Capability-based model routing with graceful fallbacks
 - Independent Advisor review
 - Domain Logic Auditor for specialized high-consequence logic
 - Security Auditor
@@ -21,11 +21,12 @@ It adds a lightweight-to-rigorous orchestration system that scales with task com
 
 The objective is not "more agents." The objective is **better engineering control**:
 
-- cheap models for mechanical discovery
-- normal coding models for implementation
-- stronger independent models for judgment and audit
+- cheap/fast models for mechanical discovery
+- strong coding models for implementation
+- stronger independent reasoning models for judgment and audit
 - explicit evidence before completion
 - escalation only when complexity warrants it
+- no hard dependency on one specific model family
 
 ## Installation from GitHub
 
@@ -80,20 +81,22 @@ Use the adaptive orchestrator workflow for this task.
 
 The actual path depends on risk. A typo does **not** run the full graph.
 
-## Model classes
+## Capability-based model routing
 
-The policy is deliberately future-oriented:
+Model names are treated as preferences, not hard dependencies. The plugin first uses what is actually available in the user's Claude Code environment.
 
-| Role | Preferred class |
+| Role | Preferred routing |
 |---|---|
-| Orchestrator | Fable |
-| Advisor | Opus |
-| Domain Logic Auditor | Fable |
-| Security Auditor | Opus |
-| Backend / Frontend / Test | Sonnet |
-| Repository Explorer | Haiku |
+| Orchestrator | Fable → Opus → Sonnet → inherit |
+| Advisor / Final Reviewer | Opus → Fable → Sonnet → inherit |
+| Domain Logic Auditor | Fable → Opus → Sonnet → inherit |
+| Security Auditor | Opus → Fable → Sonnet → inherit |
+| Backend / Frontend / Test | Sonnet → strongest suitable coding model → inherit |
+| Repository Explorer | Haiku → cheapest/fastest suitable model → inherit |
 
-Claude Code agent manifests currently accept model selectors such as `opus`, `sonnet`, `haiku`, or `inherit`. Where a Fable alias is not available in the agent manifest schema, this plugin uses `inherit` and instructs the orchestrator/domain auditor to prefer Fable when the runtime can select it. This avoids pinning dated model IDs.
+This makes the plugin portable across accounts, organizations, API providers, and future model lineups. If a preferred model is unavailable, orchestration continues with the strongest suitable available fallback rather than failing.
+
+Where Claude Code agent manifests require concrete selectors, agents use supported selectors or `inherit`; the orchestration skill contains the role-level fallback policy.
 
 ## Evidence gates
 
@@ -105,7 +108,7 @@ Per work unit, prefer:
 
 1. one normal implementation attempt
 2. one evidence-driven correction attempt
-3. if still failing, return to orchestration for root-cause re-planning or model escalation
+3. if still failing, return to orchestration for root-cause re-planning or capability escalation
 
 Repeatedly applying variants of the same failed hypothesis is explicitly discouraged.
 
